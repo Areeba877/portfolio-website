@@ -40,7 +40,7 @@ function Education() {
             <p className="text-gray-1000 leading-5 mt-3">
               Currently pursuing a Bachelor's degree in Software Engineering.
               Learning Web Development, Data Structures & Algorithms, operating Systems, Coputer Vision,
-              Database Systems, Software Design, and Full Stack Development.
+              Database Systems, Software Design, Object Oriented programming and Full Stack Development.
             </p>
 
             {/* Subjects */}
