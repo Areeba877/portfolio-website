@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full h-20 bg-[#0B7D77] shadow-md z-50">
+    <nav className="fixed top-0 left-0 w-full h-22 bg-[#0B7D77] shadow-md z-50">
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-10">
 
         {/* Logo */}
