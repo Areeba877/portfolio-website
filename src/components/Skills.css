@@ -1,0 +1,22 @@
+.skill-card {
+  position: relative;
+  background: #D5FDF9;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.skill-card:hover {
+  border-color: #0B7D77;
+  box-shadow: 0 0 15px rgba(11,125,119,.25);
+   transform: translateY(-5px);
+}
+
+.skill-content{
+  position:relative;
+  z-index:1;
+}
+
+
