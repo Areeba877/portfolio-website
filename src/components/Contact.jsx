@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
     setMessage("");
 
   } catch (err) {
-    setResponseMessage("Something went wrong.");
+    setResponseMessage("Something went wrong..");
   }
 };
   return (
@@ -67,7 +67,6 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-          {/* Second Row */}
           <div className="grid md:grid-cols-2 gap-6">
             <input
               type="text"
@@ -86,7 +85,6 @@ const handleSubmit = async (e) => {
             />
           </div>
 
-          {/* Message */}
           <textarea
             rows="8"
             placeholder="Your Message"
