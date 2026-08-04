@@ -166,7 +166,7 @@ const handleSignup = async (e) => {
 
         </form>
 
-        <p className="text-center mt-8 text-gray-600">
+        <p className="text-center mt-8 text-gray-1000">
           Already have an account?{" "}
           <Link
             to="/login"
