@@ -29,7 +29,7 @@ const projects = [
     description:
     "A web-based Car Analytics System developed using HTML, CSS, JavaScript, Python and SQL. It helps analyze car data, manage records, and generate useful insights through an interactive dashboard.",
       details:
-"This is a modern and fully responsive website that helps analyze car data, manage records, and generate useful insights through an interactive dashboard.",
+"This is a modern and fully responsive website that helps to analyze car data, manage records, and generate useful insights through an interactive dashboard.",
     tech: ["HTML", "CSS", "Javascript", "Python", "SQL"],
   },
   
