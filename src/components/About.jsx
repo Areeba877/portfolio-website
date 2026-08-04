@@ -37,7 +37,7 @@ I'm a Software Engineering student passionate about building
                 <p>
                   I enjoy learning new technologies and building real-world
                   projects using the MERN Stack. My goal is to become a
-                  professional Full Stack Developer and continuously improve my
+                  professional Full Stack Developer and improve my
                   programming and problem-solving skills.
                 </p>
 
@@ -63,7 +63,7 @@ I'm a Software Engineering student passionate about building
           </div>
 
           {/* Right Side - Image */}
-          <div className="flex justify-center lg:justify-start lg:ml-45">
+          <div className="flex justify-center lg:justify-start lg:ml-44">
 
   <div
     className="
