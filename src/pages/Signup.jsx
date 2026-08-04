@@ -35,15 +35,12 @@ const handleSignup = async (e) => {
     return;
   }
 
-  try {
-    const res = await axios.post(
-      "http://localhost:5000/signup",
-      {
-        name,
-        email,
-        password,
-      }
-    );
+ try {
+  const res = await axios.post("/api/signup", {
+    name,
+    email,
+    password,
+  });
 
     setMessage(res.data.message);
 
