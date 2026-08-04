@@ -22,7 +22,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   if (!username || !password) {
-    setMessage("Please fill all fields.");
+    setMessage("Please fill all required fields.");
     return;
   }
 
