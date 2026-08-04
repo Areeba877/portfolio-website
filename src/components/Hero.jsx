@@ -22,7 +22,7 @@ function Hero() {
       animate-float
       transition-all
       duration-500
-      shadow-[0_0_19px_rgba(11,125,119,0.70)]
+      shadow-[0_0_19px_rgba(11,125,119,0.60)]
       hover:shadow-[0_0_40px_rgba(11,125,119,1.9)]
       drop-shadow-[0_0_19px_rgba(11,125,119,1.2)]
       hover:drop-shadow-[0_0_45px_rgba(11,125,119,2)]
