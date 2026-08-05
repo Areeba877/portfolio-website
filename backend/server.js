@@ -1,7 +1,19 @@
+require('dotenv').config();
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const express = require("express");
+const mongoose = require("mongoose");
+const connectDB = require("./config/db");
+const User = require("./models/User");
+const Contact = require("./models/Contact");
 const cors = require("cors");
 
 const app = express();
+
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
+connectDB();
 const PORT = 5000;
 
 // Middleware
@@ -13,72 +25,104 @@ app.get("/", (req, res) => {
   res.send("Backend is running successfully!");
 });
 
-// Temporary Users Array
-let users = [];
 
 // Signup API
-app.post("/signup", (req, res) => {
-  const { name, email, password } = req.body;
+app.post("/signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-  const existingUser = users.find(user => user.email === email);
+    const existingUser = await User.findOne({ email });
 
-  if (existingUser) {
-    return res.status(400).json({
-      message: "User already exists"
+    if (existingUser) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
+
+    const newUser = new User({
+      name,
+      email,
+      password,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({
+      message: "Signup Successful",
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error",
     });
   }
-
-  users.push({
-    name,
-    email,
-    password,
-  });
-
-  res.status(201).json({
-    message: "Signup Successful"
-  });
 });
 
 // Login API
-app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const user = users.find(
-    (u) =>
-      u.email === email &&
-      u.password === password
-  );
+    const user = await User.findOne({
+      email,
+      password,
+    });
 
-  if (!user) {
-    return res.status(401).json({
-      message: "Invalid Email or Password",
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid Email or Password",
+      });
+    }
+
+    res.json({
+      message: "Login Successful",
+      user,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server Error",
     });
   }
-
-  res.json({
-    message: "Login Successful",
-    user,
-  });
 });
 
 // Contact API
-app.post("/contact", (req, res) => {
-  const { name, email, phone, subject, message } = req.body;
+app.post("/contact", async (req, res) => {
+  try {
+    console.log(req.body);
 
-  console.log({
-    name,
-    email,
-    phone,
-    subject,
-    message,
-  });
+    const { name, email, phone, subject, message } = req.body;
 
-  res.status(200).json({
-    message: "Message Sent Successfully!",
-  });
+    const newContact = new Contact({
+      name,
+      email,
+      phone,
+      subject,
+      message,
+    });
+
+    await newContact.save();
+
+    res.status(201).json({
+      message: "Message Sent Successfully!",
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
