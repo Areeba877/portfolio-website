@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { API_URL } from "../config";
 import {
   FaEnvelope,
   FaLock,
@@ -29,12 +29,13 @@ const handleLogin = async (e) => {
   setLoading(true);
 
   try {
-    const res = await axios.post("/api/login",
-      {
-        email: username,
-        password,
-      }
-    );
+   const res = await axios.post(
+  `${API_URL}/login`,
+  {
+    email: username,
+    password,
+  }
+);
 
     setMessage(res.data.message);
 
