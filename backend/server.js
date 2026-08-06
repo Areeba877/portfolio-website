@@ -13,8 +13,7 @@ const cors = require("cors");
 
 const app = express();
 
-console.log("MONGO_URI:", process.env.MONGO_URI);
-
+console.log("MONGO_URI exists:", !!process.env.MONGO_URI);
 connectDB();
 
 const PORT = process.env.PORT || 5000;
