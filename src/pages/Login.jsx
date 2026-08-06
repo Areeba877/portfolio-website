@@ -44,9 +44,9 @@ const handleLogin = async (e) => {
       JSON.stringify(res.data.user)
     );
 
-    setTimeout(() => {
+    
       navigate("/");
-    }, 1500);
+    
 
   } catch (err) {
     setMessage(

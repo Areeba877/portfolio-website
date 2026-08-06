@@ -31,27 +31,34 @@ const handleSignup = async (e) => {
   try {
     console.log("API URL:", `${API_URL}/signup`);
 
-    const res = await axios.post(`${API_URL}/signup`, {
-      name,
-      email,
-      password,
-    });
+   const res = await axios.post(`${API_URL}/signup`, {
+  name,
+  email,
+  password,
+});
+
+setMessage(res.data.message);
+
+setTimeout(() => {
+  navigate("/login");
+}, 1500);
+
 
     console.log(res.data);
 
     } catch (err) {
-  console.log("Full Error:", err);
+ console.log("Full Error:", err);
 
-  if (err.response) {
-    console.log("Status:", err.response.status);
-    console.log("Data:", err.response.data);
+if (err.response) {
+  console.log("Status:", err.response.status);
+  console.log("Data:", err.response.data);
 
-    setMessage(JSON.stringify(err.response.data));
-  } else {
-    console.log("No Response:", err.message);
-    setMessage(err.message);
-  }
+  setMessage(err.response.data.message);
+} else {
+  console.log("No Response:", err.message);
+  setMessage("Signup Failed");
 }
+    }
 
 };
 

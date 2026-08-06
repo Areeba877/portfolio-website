@@ -28,22 +28,15 @@ app.get("/", (req, res) => {
 
 // ==================== SIGNUP ====================
 app.post("/signup", async (req, res) => {
-  console.log("Signup API Hit");
-  console.log(req.body);
-
   try {
+    console.log("Request Body:", req.body);
+
     const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        message: "Name, email and password are required",
-      });
-    }
+    const existingUser = await User.findOne({ email });
 
     console.log("Email received:", email);
-
-    const existingUser = await User.findOne({ email });
-    console.log("Existing user check:", existingUser);
+    console.log("Existing user:", existingUser);
 
     if (existingUser) {
       return res.status(400).json({
@@ -51,12 +44,10 @@ app.post("/signup", async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = new User({
       name,
       email,
-      password: hashedPassword,
+      password,
     });
 
     await newUser.save();
@@ -64,31 +55,24 @@ app.post("/signup", async (req, res) => {
     res.status(201).json({
       message: "Signup Successful",
     });
+
   } catch (error) {
-    console.error("Signup error:", error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-
+    console.log(error);
     res.status(500).json({
       message: error.message,
     });
   }
 });
-
 // ==================== LOGIN ====================
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({
-        message: "Email and password are required",
-      });
-    }
+    console.log("Login Request:", req.body);
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, password });
+
+    console.log("User Found:", user);
 
     if (!user) {
       return res.status(401).json({
@@ -96,31 +80,18 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        message: "Invalid Email or Password",
-      });
-    }
-
     res.json({
       message: "Login Successful",
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      user,
     });
-  } catch (error) {
-    console.error("Login error:", error);
 
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
-      message: error.message,
+      message: "Server Error",
     });
   }
 });
-
 // ==================== CONTACT ====================
 app.post("/contact", async (req, res) => {
   try {
@@ -158,3 +129,5 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 module.exports = app;
+
+
