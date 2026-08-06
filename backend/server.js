@@ -27,8 +27,8 @@ app.get("/", (req, res) => {
 });
 
 // ==================== SIGNUP ====================
-app.post("/signup", async (req, res) => {
-  try {
+app.post("/api/signup", async (req, res) => {
+try {
     console.log("Request Body:", req.body);
 
     const { name, email, password } = req.body;
@@ -64,8 +64,8 @@ app.post("/signup", async (req, res) => {
   }
 });
 // ==================== LOGIN ====================
-app.post("/login", async (req, res) => {
-  try {
+app.post("/api/login", async (req, res) => {
+try {
     const { email, password } = req.body;
 
     console.log("Login Request:", req.body);
@@ -93,8 +93,8 @@ app.post("/login", async (req, res) => {
   }
 });
 // ==================== CONTACT ====================
-app.post("/contact", async (req, res) => {
-  try {
+app.post("/api/contact", async (req, res) => {
+try {
     console.log(req.body);
 
     const { name, email, phone, subject, message } = req.body;
