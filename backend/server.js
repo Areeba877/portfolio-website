@@ -1,9 +1,10 @@
-require('dotenv').config();
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first');
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+require("dotenv").config();
+
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 const express = require("express");
-const mongoose = require("mongoose");
 const connectDB = require("./config/db");
 const User = require("./models/User");
 const Contact = require("./models/Contact");
@@ -14,7 +15,8 @@ const app = express();
 console.log("MONGO_URI:", process.env.MONGO_URI);
 
 connectDB();
-const PORT = 5000;
+
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
@@ -25,10 +27,12 @@ app.get("/", (req, res) => {
   res.send("Backend is running successfully!");
 });
 
+// ==================== SIGNUP ====================
+app.post("/signup", async (req, res) => {
+  console.log("Signup API Hit");
+  console.log(req.body);
 
-// Signup API
-app.post('/api/signup', (req, res) => { ... });
-try {
+  try {
     const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -50,16 +54,16 @@ try {
     res.status(201).json({
       message: "Signup Successful",
     });
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
     res.status(500).json({
-      message: "Server Error",
+      message: error.message,
     });
   }
 });
 
-// Login API
+// ==================== LOGIN ====================
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -79,16 +83,16 @@ app.post("/login", async (req, res) => {
       message: "Login Successful",
       user,
     });
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
     res.status(500).json({
-      message: "Server Error",
+      message: error.message,
     });
   }
 });
 
-// Contact API
+// ==================== CONTACT ====================
 app.post("/contact", async (req, res) => {
   try {
     console.log(req.body);
@@ -108,9 +112,8 @@ app.post("/contact", async (req, res) => {
     res.status(201).json({
       message: "Message Sent Successfully!",
     });
-
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     res.status(500).json({
       message: error.message,
