@@ -39,16 +39,21 @@ const handleSignup = async (e) => {
 
     console.log(res.data);
 
-  } catch (err) {
-    console.log("ERROR:", err);
-    console.log("Response:", err.response);
-    setMessage(err.response?.data?.message || "Signup Failed");
+    } catch (err) {
+  console.log("Full Error:", err);
+
+  if (err.response) {
+    console.log("Status:", err.response.status);
+    console.log("Data:", err.response.data);
+
+    setMessage(JSON.stringify(err.response.data));
+  } else {
+    console.log("No Response:", err.message);
+    setMessage(err.message);
   }
+}
+
 };
-
-  
-
-
 
   return (
     <section className="min-h-screen bg-[#D5FDF9] flex items-center justify-center px-6">
