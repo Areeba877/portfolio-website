@@ -1,5 +1,5 @@
 import { Typewriter } from "react-simple-typewriter";
-import profile from "../assets/ temp.png";
+import profile from "../assets/ profile.png";
 import { FaGithub, FaLinkedinIn, FaFacebookF, FaDownload } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
