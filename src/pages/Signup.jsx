@@ -26,38 +26,27 @@ function Signup() {
 const handleSignup = async (e) => {
   e.preventDefault();
 
-  if (!name || !email || !password || !confirmPassword) {
-    setMessage("Please fill all fields.");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    setMessage("Passwords do not match.");
-    return;
-  }
+  console.log("Signup button clicked");
 
   try {
-    const res = await axios.post(
-  `${API_URL}/signup`,
-  {
-    name,
-    email,
-    password,
-  }
-);
+    console.log("API URL:", `${API_URL}/signup`);
 
-    setMessage(res.data.message);
+    const res = await axios.post(`${API_URL}/signup`, {
+      name,
+      email,
+      password,
+    });
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
+    console.log(res.data);
 
   } catch (err) {
-    setMessage(
-      err.response?.data?.message || "Signup Failed"
-    );
+    console.log("ERROR:", err);
+    console.log("Response:", err.response);
+    setMessage(err.response?.data?.message || "Signup Failed");
   }
 };
+
+  
 
 
 
