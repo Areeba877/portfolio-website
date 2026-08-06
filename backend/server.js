@@ -5,6 +5,7 @@ dns.setDefaultResultOrder("ipv4first");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 const express = require("express");
+const bcrypt = require("bcrypt");
 const connectDB = require("./config/db");
 const User = require("./models/User");
 const Contact = require("./models/Contact");
@@ -18,11 +19,9 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Test Route
 app.get("/", (req, res) => {
   res.send("Backend is running successfully!");
 });
@@ -35,7 +34,16 @@ app.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Name, email and password are required",
+      });
+    }
+
+    console.log("Email received:", email);
+
     const existingUser = await User.findOne({ email });
+    console.log("Existing user check:", existingUser);
 
     if (existingUser) {
       return res.status(400).json({
@@ -43,10 +51,12 @@ app.post("/signup", async (req, res) => {
       });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
     await newUser.save();
@@ -55,7 +65,11 @@ app.post("/signup", async (req, res) => {
       message: "Signup Successful",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Signup error:", error);
+
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
     res.status(500).json({
       message: error.message,
@@ -68,10 +82,13 @@ app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({
-      email,
-      password,
-    });
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
+
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(401).json({
@@ -79,12 +96,24 @@ app.post("/login", async (req, res) => {
       });
     }
 
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Invalid Email or Password",
+      });
+    }
+
     res.json({
       message: "Login Successful",
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
 
     res.status(500).json({
       message: error.message,
@@ -113,7 +142,7 @@ app.post("/contact", async (req, res) => {
       message: "Message Sent Successfully!",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Contact error:", error);
 
     res.status(500).json({
       message: error.message,
